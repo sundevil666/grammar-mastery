@@ -1,8 +1,8 @@
 {
   "name": "grammar-mastery",
   "version": "0.0.1",
-  "description": "A Quasar Project",
-  "productName": "Quasar App",
+  "description": "GRAMify: Master English grammar with interactive lessons and personalized practice.",
+  "productName": "GRAMify",
   "author": "sundevildi <sundevildi@gmail.com>",
   "private": true,
   "scripts": {
