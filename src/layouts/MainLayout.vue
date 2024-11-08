@@ -10,24 +10,55 @@
           aria-label="Menu"
           @click="toggleLeftDrawer"
         />
-
-        <q-toolbar-title> GRAMify </q-toolbar-title>
       </q-toolbar>
     </q-header>
 
     <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
       <q-list>
-        <q-item-label header> Essential Links </q-item-label>
+        <q-item-label header> GRAMify </q-item-label>
 
         <EssentialLink
-          v-for="link in linksList"
-          :key="link.title"
-          v-bind="link"
+          v-for="item in listMenu"
+          :key="item.title"
+          v-bind="item"
         />
+
+        <div>
+          <q-list class="rounded-borders">
+            <q-expansion-item
+              expand-separator
+              label="Present"
+              icon="fitness_center"
+              caption="U1 - U9"
+            >
+              <EssentialLink
+                v-for="link in menuListU1U9"
+                :key="link.title"
+                v-bind="link"
+                class="q-ml-lg"
+              />
+            </q-expansion-item>
+            <q-expansion-item
+              expand-separator
+              label="Past"
+              icon="fitness_center"
+              caption="U10 - U14"
+            >
+              <q-card>
+                <q-card-section>
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                  Quidem, eius reprehenderit eos corrupti commodi magni quaerat
+                  ex numquam, dolorum officiis modi facere maiores architecto
+                  suscipit iste eveniet doloribus ullam aliquid.
+                </q-card-section>
+              </q-card>
+            </q-expansion-item>
+          </q-list>
+        </div>
       </q-list>
     </q-drawer>
 
-    <q-page-container>
+    <q-page-container style="height: 100vh">
       <router-view />
     </q-page-container>
   </q-layout>
@@ -36,61 +67,24 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import EssentialLink, {
-  EssentialLinkProps,
+  IEssentialLinkProps,
 } from 'components/EssentialLink.vue';
+import { mainMenuList } from 'src/mock/contents';
+import { useMainMenuStore } from 'src/stores/main-menu/useMainMenuStore';
+
+const menuStore = useMainMenuStore();
+menuStore.initializeSortedUnits(); // Call once to initialize if not done automatically
+const menuListU1U9: IEssentialLinkProps[] = menuStore.getItemMenu('u1', 'u9');
 
 defineOptions({
   name: 'MainLayout',
 });
-
-const linksList: EssentialLinkProps[] = [
-  {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev',
-  },
-  {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework',
-  },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev',
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev',
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev',
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev',
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev',
-  },
-];
 
 const leftDrawerOpen = ref(false);
 
 function toggleLeftDrawer() {
   leftDrawerOpen.value = !leftDrawerOpen.value;
 }
+
+const listMenu: IEssentialLinkProps[] = mainMenuList;
 </script>
